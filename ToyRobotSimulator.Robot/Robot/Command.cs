@@ -2,10 +2,10 @@
 {
     public enum  Command
     {
-        PLACE,
-        MOVE,
-        LEFT,
-        RIGHT,
-        REPORT
+        Place,
+        Move,
+        Left,
+        Right,
+        Report
     }
 }

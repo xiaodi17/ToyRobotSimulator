@@ -2,7 +2,7 @@
 {
     public interface IRobot
     {
-        void Place(string command);
+        bool TryPlace(string command);
 
         void Move();
 
@@ -12,6 +12,6 @@
 
         string Report();
 
-        bool IsValidCommand(Command command);
+        bool IsCommandValid(Command command);
     }
 }

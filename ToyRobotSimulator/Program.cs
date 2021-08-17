@@ -1,4 +1,6 @@
 ﻿using System;
+using ToyRobotSimulator.Robot.Robot;
+using ToyRobotSimulator.Robot.Tabletop;
 
 namespace ToyRobotSimulator
 {
@@ -6,19 +8,19 @@ namespace ToyRobotSimulator
     {
         static void Main(string[] args)
         {
-            while (true)
+            var tabletop = new TabletopMap();
+            var robot = new ToyRobot(tabletop);
+            var robotSimulator = new RobotSimulator(robot);
+
+            try
             {
-                Console.WriteLine("Please enter a command:");
-                var command = Console.ReadLine();
-                
-                if (string.IsNullOrEmpty(command))
-                    continue;
-                
-                if (command.Equals("EXIT"))
-                    break;
-                
+                robotSimulator.Execute();
             }
-            Console.WriteLine("You have exited the game.");
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error has occurred: {e.Message} Press enter to exit the program.");
+                Console.Read();
+            }
         }
     }
 }
