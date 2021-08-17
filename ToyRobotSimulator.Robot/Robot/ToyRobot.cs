@@ -27,6 +27,7 @@ namespace ToyRobotSimulator.Robot.Robot
         {
             char[] splitChar =  {',', ' '};
             var commandDetails = command.Split(splitChar);
+            
             if (!int.TryParse(commandDetails[1], out _xCurrentPosition))
                 return false;
             
@@ -60,7 +61,7 @@ namespace ToyRobotSimulator.Robot.Robot
                     break;
                 case Direction.North:
                     if (IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition + 1)) 
-                        _xCurrentPosition++;
+                        _yCurrentPosition++;
                     break;
                 case Direction.South:
                     if (IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition - 1)) 

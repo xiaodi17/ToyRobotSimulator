@@ -19,9 +19,6 @@ namespace ToyRobotSimulator
             
             while (!string.Equals(command, "exit", StringComparison.OrdinalIgnoreCase))
             {
-                // if (string.IsNullOrEmpty(command))
-                //     continue;
-                
                 switch (command.ToLower())
                 {
                     case var place when place.StartsWith("place", StringComparison.OrdinalIgnoreCase):
@@ -55,22 +52,46 @@ namespace ToyRobotSimulator
 
         private void Report()
         {
-            throw new NotImplementedException();
+            if (_robot.IsCommandValid(Command.Report))
+            {
+                Console.WriteLine($"Robot is at {_robot.Report()}");
+            }
+            
+            Console.WriteLine("You have to use place command before using other commands");
         }
 
         private void RotateToRight()
         {
-            throw new NotImplementedException();
+            if (_robot.IsCommandValid(Command.Right))
+            {
+                _robot.Right();
+                Console.WriteLine($"Robot has been successfully rotated to the right, the current position is: {_robot.Report()}");
+            }
+            
+            Console.WriteLine("You have to use place command before using other commands");
         }
 
         private void RotateToLeft()
         {
-            throw new NotImplementedException();
+            if (_robot.IsCommandValid(Command.Left))
+            {
+                _robot.Left();
+                Console.WriteLine($"Robot has been successfully rotated to the left, the current position is: {_robot.Report()}");
+            }
+            
+            Console.WriteLine("You have to use place command before using other commands");
         }
 
         private void Move()
         {
-            throw new NotImplementedException();
+            if (_robot.IsCommandValid(Command.Move))
+            {
+                _robot.Move();
+                Console.WriteLine($"Robot has been successfully moved to: {_robot.Report()}");
+                return;
+            }
+            
+            Console.WriteLine("Robot cannot be moved");
         }
 
         private void Place(string place)
