@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using ToyRobotSimulator.Robot.Tabletop;
 
 namespace ToyRobotSimulator.Robot.Robot
@@ -25,40 +26,46 @@ namespace ToyRobotSimulator.Robot.Robot
 
         public bool TryPlace(string command)
         {
-            char[] splitChar =  {',', ' '};
-            var commandDetails = command.Split(splitChar);
+            // char[] splitChar =  {',', ' '};
+            // var commandDetails = command.Trim().Split(splitChar);
+            // var commandDetails = command.Substring(5)
+            var result = Regex.Replace(command.Substring(5), @"\s+", "");
+            var commandDetails = result.Split(',');
 
-            if (commandDetails.Length < 3 || commandDetails.Length > 4)
+            if (commandDetails.Length < 2 || commandDetails.Length > 3)
                 return false;
             
-            if (!int.TryParse(commandDetails[1], out _xCurrentPosition))
+            if (!int.TryParse(commandDetails[0], out var xMovePosition))
                 return false;
             
-            if (!int.TryParse(commandDetails[2], out _yCurrentPosition))
+            if (!int.TryParse(commandDetails[1], out var yMovePosition))
                 return false;
 
-            if (commandDetails.Length == 4)
+            if (commandDetails.Length == 3)
             {
-                if (string.IsNullOrEmpty(commandDetails[3]))
+                if (string.IsNullOrEmpty(commandDetails[2]))
                     return false;
                 
-                if (!Enum.TryParse(commandDetails[3], true, out _direction))
+                if (!Enum.TryParse(commandDetails[2], true, out _direction))
                 {
                     Console.WriteLine("Invalid direction");
                 }
             }
 
-            if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition))
+            if (!IsCurrentPositionValid(xMovePosition, yMovePosition))
             {
                 Console.WriteLine("Place at invalid position");
                 return false;
             }
 
-            if (IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition) && _direction == Direction.Undefined)
+            if (IsCurrentPositionValid(xMovePosition, yMovePosition) && _direction == Direction.Undefined)
             {
                 Console.WriteLine("Invalid place operation, the first place operation has to include a facing direction.");
                 return false;
             }
+
+            _xCurrentPosition = xMovePosition;
+            _yCurrentPosition = yMovePosition;
 
             return true;
         }
