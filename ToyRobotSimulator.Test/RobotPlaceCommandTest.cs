@@ -18,7 +18,7 @@ namespace ToyRobotSimulator.Test
             {
                 "place",
                 "place 0,0",
-                // "place,0,0,north",
+                "place,0,0,north",
                 "place 0,0,",
                 "place 0,0,north,0"
             };
@@ -43,7 +43,6 @@ namespace ToyRobotSimulator.Test
             
             Assert.True(firstCommand);
             Assert.True(secondCommand);
-
         }
     }
 }

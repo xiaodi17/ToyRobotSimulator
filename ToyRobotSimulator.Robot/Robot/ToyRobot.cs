@@ -26,11 +26,8 @@ namespace ToyRobotSimulator.Robot.Robot
 
         public bool TryPlace(string command)
         {
-            // char[] splitChar =  {',', ' '};
-            // var commandDetails = command.Trim().Split(splitChar);
-            // var commandDetails = command.Substring(5)
-            var result = Regex.Replace(command.Substring(5), @"\s+", "");
-            var commandDetails = result.Split(',');
+            var stringWithoutWhitespaces = Regex.Replace(command.Substring(5), @"\s+", "");
+            var commandDetails = stringWithoutWhitespaces.Split(',');
 
             if (commandDetails.Length < 2 || commandDetails.Length > 3)
                 return false;
