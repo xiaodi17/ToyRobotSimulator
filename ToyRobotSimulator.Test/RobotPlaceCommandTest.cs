@@ -36,13 +36,17 @@ namespace ToyRobotSimulator.Test
         [Fact]
         public void Place_Without_Facing_Direction_After_Robot_Placed_down()
         {
+            //Arrange
             var robot = new ToyRobot(new TabletopMap());
+            
+            //Act
             var firstCommand = robot.TryPlace("place 0,0,north");
-
             var secondCommand = robot.TryPlace("place 1,1");
             
+            //Assert
             Assert.True(firstCommand);
             Assert.True(secondCommand);
+            Assert.Equal(Direction.North, robot.GetDirection());
         }
     }
 }

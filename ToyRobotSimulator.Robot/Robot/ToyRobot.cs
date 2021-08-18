@@ -24,6 +24,11 @@ namespace ToyRobotSimulator.Robot.Robot
             _tabletopMap = tabletopMap;
         }
 
+        public Direction GetDirection()
+        {
+            return _direction;
+        }
+
         public bool TryPlace(string command)
         {
             var stringWithoutWhitespaces = Regex.Replace(command.Substring(5), @"\s+", "");
