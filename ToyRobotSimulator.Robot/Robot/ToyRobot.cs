@@ -41,11 +41,11 @@ namespace ToyRobotSimulator.Robot.Robot
             {
                 if (string.IsNullOrEmpty(commandDetails[3]))
                     return false;
-            }
-            
-            if (!Enum.TryParse(commandDetails[3], true, out _direction))
-            {
-                Console.WriteLine("Invalid direction");
+                
+                if (!Enum.TryParse(commandDetails[3], true, out _direction))
+                {
+                    Console.WriteLine("Invalid direction");
+                }
             }
 
             if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition))
