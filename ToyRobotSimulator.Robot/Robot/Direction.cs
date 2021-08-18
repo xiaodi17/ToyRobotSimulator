@@ -2,6 +2,7 @@
 {
     public enum Direction
     {
+        Undefined,
         North,
         South,
         East,

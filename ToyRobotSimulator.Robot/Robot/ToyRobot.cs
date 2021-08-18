@@ -27,6 +27,9 @@ namespace ToyRobotSimulator.Robot.Robot
         {
             char[] splitChar =  {',', ' '};
             var commandDetails = command.Split(splitChar);
+
+            if (commandDetails.Length < 3 || commandDetails.Length > 4)
+                return false;
             
             if (!int.TryParse(commandDetails[1], out _xCurrentPosition))
                 return false;
@@ -34,10 +37,13 @@ namespace ToyRobotSimulator.Robot.Robot
             if (!int.TryParse(commandDetails[2], out _yCurrentPosition))
                 return false;
 
-            if (string.IsNullOrEmpty(commandDetails[3]))
-                return false;
+            if (commandDetails.Length == 4)
+            {
+                if (string.IsNullOrEmpty(commandDetails[3]))
+                    return false;
+            }
             
-            if (!Enum.TryParse(commandDetails[2], out _direction))
+            if (!Enum.TryParse(commandDetails[3], true, out _direction))
             {
                 Console.WriteLine("Invalid direction");
             }
@@ -45,6 +51,12 @@ namespace ToyRobotSimulator.Robot.Robot
             if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition))
             {
                 Console.WriteLine("Place at invalid position");
+                return false;
+            }
+
+            if (IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition) && _direction == Direction.Undefined)
+            {
+                Console.WriteLine("Invalid place operation, the first place operation has to include a facing direction.");
                 return false;
             }
 
