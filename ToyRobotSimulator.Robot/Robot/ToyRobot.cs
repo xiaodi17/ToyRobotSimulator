@@ -77,11 +77,15 @@ namespace ToyRobotSimulator.Robot.Robot
                     return;
                 }
                 
-                if (!Enum.TryParse(commandDetails[2], true, out _direction))
+                if (!Enum.TryParse(commandDetails[2], true, out Direction direction))
                 {
-                    Console.WriteLine(RobotMessage.INVALID_COMMAND);
-                    return;
+                    if (direction == Direction.Undefined)
+                    {
+                        Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                        return;
+                    }
                 }
+                _direction = direction;
             }
 
             if (!IsCurrentPositionValid(xMovePosition, yMovePosition))
