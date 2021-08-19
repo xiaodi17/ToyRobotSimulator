@@ -104,8 +104,11 @@ namespace ToyRobotSimulator.Robot.Robot
             }
         }
 
-        public void Left()
+        public bool TryLeft()
         {
+            if (!IsCommandValid(Command.Left))
+                return false;
+            
             switch (_direction)
             {
                 case Direction.East:
@@ -121,6 +124,8 @@ namespace ToyRobotSimulator.Robot.Robot
                     _direction = Direction.South;
                     break;
             }
+
+            return true;
         }
 
         public void Right()

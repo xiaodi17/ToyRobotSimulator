@@ -6,7 +6,7 @@
 
         bool TryMove();
 
-        void Left();
+        bool TryLeft();
 
         void Right();
 

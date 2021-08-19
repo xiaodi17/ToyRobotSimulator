@@ -11,7 +11,7 @@ namespace ToyRobotSimulator.Test
         private readonly ToyRobot _toyRobot = new ToyRobot(new TabletopMap());
         
         [Fact]
-        public void Place_Command_Initial_Invalid()
+        public void PlaceCommandInitialInvalid()
         {
             //Arrange
             var invalidPlaceCommands = new List<string>()
@@ -34,7 +34,7 @@ namespace ToyRobotSimulator.Test
         }
 
         [Fact]
-        public void Place_Without_Facing_Direction_After_Robot_Placed_down()
+        public void PlaceWithoutFacingDirectionAfterRobotPlacedDown()
         {
             //Arrange
             var robot = new ToyRobot(new TabletopMap());

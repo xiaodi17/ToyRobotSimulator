@@ -7,7 +7,7 @@ namespace ToyRobotSimulator.Test
     public class RobotMoveCommandTest
     {
         [Fact]
-        public void Move_Command_Initial_Invalid()
+        public void MoveCommandInitialInvalid()
         {
             //Arrange
             var robot = new ToyRobot(new TabletopMap());
@@ -20,7 +20,7 @@ namespace ToyRobotSimulator.Test
         }
 
         [Fact]
-        public void Move_After_Place_Valid()
+        public void MoveAfterPlaceValid()
         {
             //Arrange
             var robot = new ToyRobot(new TabletopMap());

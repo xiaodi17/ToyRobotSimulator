@@ -73,9 +73,8 @@ namespace ToyRobotSimulator
 
         private void RotateToLeft()
         {
-            if (_robot.IsCommandValid(Command.Left))
+            if (_robot.TryLeft())
             {
-                _robot.Left();
                 Console.WriteLine($"Robot has been successfully rotated to the left, the current position is: {_robot.Report()}");
             }
             
