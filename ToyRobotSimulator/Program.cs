@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using ToyRobotSimulator.Robot.Robot;
 using ToyRobotSimulator.Robot.Tabletop;
 
@@ -6,23 +7,34 @@ namespace ToyRobotSimulator
 {
     class Program
     {
+        private static IServiceProvider _serviceProvider;
         static void Main(string[] args)
         {
-            var tabletop = new TabletopMap();
-            var robot = new ToyRobot(tabletop);
-            var robotSimulator = new RobotSimulator(robot);
-
-            try
+            RegisterServices();
+            IServiceScope scope = _serviceProvider.CreateScope();
+            scope.ServiceProvider.GetRequiredService<RobotSimulator>().Execute();
+            DisposeServices();
+        }
+        
+        private static void RegisterServices()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<IRobot, ToyRobot>();
+            services.AddSingleton<RobotSimulator>();
+            services.AddSingleton<TabletopMap>();
+            _serviceProvider = services.BuildServiceProvider(true);
+        }
+        
+        private static void DisposeServices()
+        {
+            if (_serviceProvider == null)
             {
-                robotSimulator.Execute();
+                return;
             }
-            catch (Exception e)
+            if (_serviceProvider is IDisposable)
             {
-                Console.WriteLine($"An error has occurred: {e.Message} Press enter to exit the program.");
-                Console.Read();
+                ((IDisposable)_serviceProvider).Dispose();
             }
-            
-            Console.WriteLine("Toy robot simulator terminated");
         }
     }
 }
