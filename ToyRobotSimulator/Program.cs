@@ -21,6 +21,8 @@ namespace ToyRobotSimulator
                 Console.WriteLine($"An error has occurred: {e.Message} Press enter to exit the program.");
                 Console.Read();
             }
+            
+            Console.WriteLine("Toy robot simulator terminated");
         }
     }
 }

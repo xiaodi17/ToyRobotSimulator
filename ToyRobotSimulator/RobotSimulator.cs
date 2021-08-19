@@ -15,7 +15,7 @@ namespace ToyRobotSimulator
 
         public void Execute()
         {
-            Console.WriteLine("Please enter a command:");
+            Console.WriteLine(RobotMessage.ROBOT_SIMULATOR_INSTRUCTION);
             var command = Console.ReadLine();
             
             while (!string.Equals(command, "exit", StringComparison.OrdinalIgnoreCase))
@@ -41,6 +41,9 @@ namespace ToyRobotSimulator
                     case "report":
                         _robot.Report();
                         break;
+                    
+                    case "exit":
+                        return;
                         
                     default:
                         Console.WriteLine(RobotMessage.INVALID_COMMAND);
