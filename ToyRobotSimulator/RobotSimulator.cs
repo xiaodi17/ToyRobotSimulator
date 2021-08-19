@@ -64,7 +64,7 @@ namespace ToyRobotSimulator
         {
             if (_robot.IsCommandValid(Command.Right))
             {
-                _robot.Right();
+                _robot.TryRight();
                 Console.WriteLine($"Robot has been successfully rotated to the right, the current position is: {_robot.Report()}");
             }
             
