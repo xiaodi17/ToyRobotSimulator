@@ -10,3 +10,7 @@
 4. Cd to ToyRobotSimulator.ToyRobotSimulator and enter the following command:
 
 `dotnet run`
+
+5. Cd to ToyRobotSimulator.ToyRobotSimulator.Test and enter the following command to test:
+
+`dotnet test`
