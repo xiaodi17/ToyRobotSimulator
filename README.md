@@ -8,4 +8,5 @@
 `dotnet restore`
 
 4. Cd to ToyRobotSimulator.ToyRobotSimulator and enter the following command:
+5. 
 `dotnet run`
