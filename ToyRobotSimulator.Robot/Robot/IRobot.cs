@@ -8,7 +8,7 @@
 
         bool TryLeft();
 
-        void Right();
+        bool TryRight();
 
         string Report();
 

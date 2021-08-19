@@ -11,7 +11,7 @@ namespace ToyRobotSimulator.Test
         {
             var robot = new ToyRobot(new TabletopMap());
             var rotateLeftCommand = robot.TryLeft();
-            var rotateRightCommand = robot.TryLeft();
+            var rotateRightCommand = robot.TryRight();
             
             Assert.False(rotateLeftCommand);
             Assert.False(rotateRightCommand);
@@ -23,7 +23,7 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             robot.TryPlace("place 0,0,north");
             var rotateLeftCommand = robot.TryLeft();
-            var rotateRightCommand = robot.TryLeft();
+            var rotateRightCommand = robot.TryRight();
             
             Assert.True(rotateLeftCommand);
             Assert.True(rotateRightCommand);
