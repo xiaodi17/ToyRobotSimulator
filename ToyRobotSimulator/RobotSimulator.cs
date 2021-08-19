@@ -86,12 +86,12 @@ namespace ToyRobotSimulator
         {
             if (_robot.IsCommandValid(Command.Move))
             {
-                _robot.Move();
+                if (!_robot.TryMove())
+                {
+                    Console.WriteLine("Robot cannot be moved");
+                }
                 Console.WriteLine($"Robot has been successfully moved to: {_robot.Report()}");
-                return;
             }
-            
-            Console.WriteLine("Robot cannot be moved");
         }
 
         private void Place(string place)

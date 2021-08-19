@@ -72,26 +72,35 @@ namespace ToyRobotSimulator.Robot.Robot
             return true;
         }
 
-        public void Move()
+        public bool TryMove()
         {
             switch (_direction)
             {
                 case Direction.East:
-                    if (IsCurrentPositionValid(_xCurrentPosition + 1, _yCurrentPosition)) 
-                        _xCurrentPosition++;
-                    break;
+                    if (!IsCurrentPositionValid(_xCurrentPosition + 1, _yCurrentPosition))
+                        return false;
+                    _xCurrentPosition++;
+                    return true;
                 case Direction.North:
-                    if (IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition + 1)) 
-                        _yCurrentPosition++;
-                    break;
+                    if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition + 1))
+                        return false;
+                    _yCurrentPosition++;
+                    return true;
                 case Direction.South:
-                    if (IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition - 1)) 
-                        _yCurrentPosition--;
-                    break;
+                    if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition - 1))
+                        return false;
+                    _yCurrentPosition--;
+                    return true;
                 case Direction.West:
-                    if (IsCurrentPositionValid(_xCurrentPosition - 1, _yCurrentPosition)) 
-                        _xCurrentPosition--;
-                    break;
+                    if (!IsCurrentPositionValid(_xCurrentPosition - 1, _yCurrentPosition))
+                        return false;
+                    _xCurrentPosition--;
+                    return true;
+                case Direction.Undefined:
+                    return false;
+                
+                default:
+                    return false;
             }
         }
 

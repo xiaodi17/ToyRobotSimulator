@@ -4,7 +4,7 @@
     {
         bool TryPlace(string command);
 
-        void Move();
+        bool TryMove();
 
         void Left();
 
