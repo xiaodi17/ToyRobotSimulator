@@ -48,10 +48,9 @@ namespace ToyRobotSimulator.Robot.Robot
 
         public void Place(string command)
         {
-            var stringWithoutWhitespaces = Regex.Replace(command.Substring(5), @"\s+", "");
-            var commandDetails = stringWithoutWhitespaces.Split(',');
+            var commandDetails = HandlePlaceCommand(command);
 
-            if (commandDetails.Length < 2 || commandDetails.Length > 3)
+            if (!IsPlaceCommandValid(commandDetails))
             {
                 Console.WriteLine(RobotMessage.INVALID_COMMAND);
                 return;
@@ -69,9 +68,9 @@ namespace ToyRobotSimulator.Robot.Robot
                 return;
             }
 
-            if (commandDetails.Length == 3)
+            if (PlaceCommandIncludesDirection(commandDetails))
             {
-                if (string.IsNullOrEmpty(commandDetails[2]))
+                if (!TryParseDirectionToString(commandDetails[2]))
                 {
                     Console.WriteLine(RobotMessage.INVALID_COMMAND);
                     return;
@@ -85,6 +84,7 @@ namespace ToyRobotSimulator.Robot.Robot
                         return;
                     }
                 }
+                
                 _direction = direction;
             }
 
@@ -102,6 +102,36 @@ namespace ToyRobotSimulator.Robot.Robot
 
             _xCurrentPosition = xMovePosition;
             _yCurrentPosition = yMovePosition;
+        }
+
+        private static bool TryParseDirectionToString(string result)
+        {
+            if (string.IsNullOrEmpty(result))
+            {
+                return false;
+            }
+
+            if (int.TryParse(result, out var incorrectDirection))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static bool PlaceCommandIncludesDirection(string[] commandDetails)
+        {
+            return commandDetails.Length == 3;
+        }
+
+        private static bool IsPlaceCommandValid(string[] commandDetails)
+        {
+            return commandDetails.Length >= 2 && commandDetails.Length <= 3;
+        }
+
+        private static string[] HandlePlaceCommand(string command)
+        {
+            var stringWithoutWhitespaces = Regex.Replace(command.Substring(5), @"\s+", "");
+            return stringWithoutWhitespaces.Split(',');
         }
 
         public void Move()
