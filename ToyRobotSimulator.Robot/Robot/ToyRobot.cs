@@ -150,6 +150,12 @@ namespace ToyRobotSimulator.Robot.Robot
 
         public void Move()
         {
+            if (!IsCommandValid(Command.Move))
+            {
+                Console.WriteLine(RobotMessage.ROBOT_NOT_PLACED);
+                return;
+            }
+            
             switch (_direction)
             {
                 case Direction.East:
@@ -195,7 +201,6 @@ namespace ToyRobotSimulator.Robot.Robot
                 case Direction.Undefined:
                     Console.WriteLine(RobotMessage.ROBOT_INVALID_DIRECTION);
                     break;
-                
             }
         }
 
@@ -255,7 +260,7 @@ namespace ToyRobotSimulator.Robot.Robot
 
         public void Report()
         {
-            if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition))
+            if (!IsCommandValid(Command.Left))
             {
                 Console.WriteLine(RobotMessage.ROBOT_NOT_PLACED);
                 return;
