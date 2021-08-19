@@ -56,37 +56,10 @@ namespace ToyRobotSimulator.Robot.Robot
                 return;
             }
 
-            if (!int.TryParse(commandDetails[0], out var xMovePosition))
-            {
-                Console.WriteLine(RobotMessage.INVALID_COMMAND);
-                return;
-            }
+            var (xMovePosition, yMovePosition) = TryParseRobotPosition(commandDetails);
 
-            if (!int.TryParse(commandDetails[1], out var yMovePosition))
-            {
-                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+            if (!TryParseDirection(commandDetails))
                 return;
-            }
-
-            if (PlaceCommandIncludesDirection(commandDetails))
-            {
-                if (!TryParseDirectionToString(commandDetails[2]))
-                {
-                    Console.WriteLine(RobotMessage.INVALID_COMMAND);
-                    return;
-                }
-                
-                if (!Enum.TryParse(commandDetails[2], true, out Direction direction))
-                {
-                    if (direction == Direction.Undefined)
-                    {
-                        Console.WriteLine(RobotMessage.INVALID_COMMAND);
-                        return;
-                    }
-                }
-                
-                _direction = direction;
-            }
 
             if (!IsCurrentPositionValid(xMovePosition, yMovePosition))
             {
@@ -104,7 +77,49 @@ namespace ToyRobotSimulator.Robot.Robot
             _yCurrentPosition = yMovePosition;
         }
 
-        private static bool TryParseDirectionToString(string result)
+        private bool TryParseDirection(string[] commandDetails)
+        {
+            if (IsPlaceCommandIncludingDirection(commandDetails))
+            {
+                if (!IsDirectionInStringFormat(commandDetails[2]))
+                {
+                    Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                    return false;
+                }
+                
+                if (!Enum.TryParse(commandDetails[2], true, out Direction direction))
+                {
+                    if (direction == Direction.Undefined)
+                    {
+                        Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                        return false;
+                    }
+                }
+                
+                _direction = direction;
+            }
+
+            return true;
+        }
+
+        private static (int, int) TryParseRobotPosition(string[] commandDetails)
+        {
+            if (!int.TryParse(commandDetails[0], out var xMovePosition))
+            {
+                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                return (-1, -1);
+            }
+
+            if (!int.TryParse(commandDetails[1], out var yMovePosition))
+            {
+                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                return (-1, -1);
+            }
+
+            return (xMovePosition, yMovePosition);
+        }
+
+        private static bool IsDirectionInStringFormat(string result)
         {
             if (string.IsNullOrEmpty(result))
             {
@@ -118,7 +133,7 @@ namespace ToyRobotSimulator.Robot.Robot
             return true;
         }
 
-        private static bool PlaceCommandIncludesDirection(string[] commandDetails)
+        private static bool IsPlaceCommandIncludingDirection(string[] commandDetails)
         {
             return commandDetails.Length == 3;
         }
