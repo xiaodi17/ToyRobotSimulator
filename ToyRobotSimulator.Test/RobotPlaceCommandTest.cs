@@ -20,7 +20,9 @@ namespace ToyRobotSimulator.Test
                 "place 0,0",
                 "place,0,0,north",
                 "place 0,0,",
-                "place 0,0,north,0"
+                "place 0,0,north,0",
+                "place 0,0,4",
+                "place 0,0,wee"
             };
 
             //Act

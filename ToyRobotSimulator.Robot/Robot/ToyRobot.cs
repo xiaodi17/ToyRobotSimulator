@@ -79,26 +79,25 @@ namespace ToyRobotSimulator.Robot.Robot
 
         private bool TryParseDirection(string[] commandDetails)
         {
-            if (IsPlaceCommandIncludingDirection(commandDetails))
+            if (!IsPlaceCommandIncludingDirection(commandDetails)) 
+                return true;
+            
+            if (!IsDirectionInStringFormat(commandDetails[2]))
             {
-                if (!IsDirectionInStringFormat(commandDetails[2]))
+                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                return false;
+            }
+                
+            if (!Enum.TryParse(commandDetails[2], true, out Direction direction))
+            {
+                if (direction == Direction.Undefined)
                 {
                     Console.WriteLine(RobotMessage.INVALID_COMMAND);
                     return false;
                 }
-                
-                if (!Enum.TryParse(commandDetails[2], true, out Direction direction))
-                {
-                    if (direction == Direction.Undefined)
-                    {
-                        Console.WriteLine(RobotMessage.INVALID_COMMAND);
-                        return false;
-                    }
-                }
-                
-                _direction = direction;
             }
-
+                
+            _direction = direction;
             return true;
         }
 
