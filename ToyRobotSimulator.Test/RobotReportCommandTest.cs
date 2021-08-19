@@ -15,7 +15,6 @@ namespace ToyRobotSimulator.Test
             //Act
             var isReportCommandValid = robot.IsCommandValid(Command.Report);
             
-            
             //Assert
             Assert.False(isReportCommandValid);
         }
@@ -27,11 +26,11 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            robot.TryPlace("place 0,0,north");
-            var report = robot.Report();
-            
+            robot.Place("place 0,0,north");
+            var isReportCommandValid = robot.IsCommandValid(Command.Report);
+
             //Assert
-            Assert.Equal("X: 0, Y: 0, Facing: North", report);
+            Assert.True(isReportCommandValid);
         }
     }
 }

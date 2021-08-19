@@ -11,12 +11,9 @@ namespace ToyRobotSimulator.Test
         {
             //Arrange
             var robot = new ToyRobot(new TabletopMap());
-            
-            //Act
-            var initialMoveCommand = robot.TryMove();
-            
+
             //Assert
-            Assert.False(initialMoveCommand);
+            Assert.False(robot.IsCommandValid(Command.Move));
         }
 
         [Fact]
@@ -26,12 +23,12 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            var placeCommand = robot.TryPlace("place 0,0,north");
-            var moveCommand = robot.TryMove();
+            robot.Place("place 0,0,north");
+            robot.Move();
             
             //Assert
-            Assert.True(placeCommand);
-            Assert.True(moveCommand);
+            Assert.True(robot.IsCommandValid(Command.Move));
+            Assert.Equal((0, 1), robot.GetRobotCurrentPosition());
         }
         
         [Fact]
@@ -41,15 +38,18 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            robot.TryPlace("place 0,0,south");
-            var firstMoveCommand = robot.TryMove();
-            
-            robot.TryPlace("place 0,0,west");
-            var secondMoveCommand = robot.TryMove();
+            robot.Place("place 0,0,south");
+            robot.Move();
             
             //Assert
-            Assert.False(firstMoveCommand);
-            Assert.False(secondMoveCommand);
+            Assert.Equal((0, 0), robot.GetRobotCurrentPosition());
+            
+            //Act
+            robot.Place("place 0,0,west");
+            robot.Move();
+            
+            //Assert
+            Assert.Equal((0, 0), robot.GetRobotCurrentPosition());
         }
 
         [Fact]
@@ -59,15 +59,18 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            robot.TryPlace("place 0,5,north");
-            var firstMoveCommand = robot.TryMove();
-            
-            robot.TryPlace("place 0,5,west");
-            var secondMoveCommand = robot.TryMove();
+            robot.Place("place 0,5,north");
+            robot.Move();
             
             //Assert
-            Assert.False(firstMoveCommand);
-            Assert.False(secondMoveCommand);
+            Assert.Equal((0, 5), robot.GetRobotCurrentPosition());
+            
+            //Act
+            robot.Place("place 0,5,west");
+            robot.Move();
+            
+            //Assert
+            Assert.Equal((0, 5), robot.GetRobotCurrentPosition());
         }
         
         [Fact]
@@ -77,15 +80,18 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            robot.TryPlace("place 5,5,north");
-            var firstMoveCommand = robot.TryMove();
-            
-            robot.TryPlace("place 5,5,east");
-            var secondMoveCommand = robot.TryMove();
+            robot.Place("place 5,5,north");
+            robot.Move();
             
             //Assert
-            Assert.False(firstMoveCommand);
-            Assert.False(secondMoveCommand);
+            Assert.Equal((5, 5), robot.GetRobotCurrentPosition());
+            
+            //Act
+            robot.Place("place 5,5,east");
+            robot.Move();
+            
+            //Assert
+            Assert.Equal((5, 5), robot.GetRobotCurrentPosition());
         }
         
         [Fact]
@@ -95,15 +101,18 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            robot.TryPlace("place 5,0,east");
-            var firstMoveCommand = robot.TryMove();
-            
-            robot.TryPlace("place 5,0,south");
-            var secondMoveCommand = robot.TryMove();
+            robot.Place("place 5,0,east");
+            robot.Move();
             
             //Assert
-            Assert.False(firstMoveCommand);
-            Assert.False(secondMoveCommand);
+            Assert.Equal((5, 0), robot.GetRobotCurrentPosition());
+            
+            //Act
+            robot.Place("place 5,0,south");
+            robot.Move();
+            
+            //Assert
+            Assert.Equal((5, 0), robot.GetRobotCurrentPosition());
         }
     }
 }

@@ -2,15 +2,15 @@
 {
     public interface IRobot
     {
-        bool TryPlace(string command);
+        void Place(string command);
 
-        bool TryMove();
+        void Move();
 
-        bool TryLeft();
+        void Left();
 
-        bool TryRight();
+        void Right();
 
-        string Report();
+        void Report();
 
         bool IsCommandValid(Command command);
     }

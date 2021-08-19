@@ -11,30 +11,40 @@ namespace ToyRobotSimulator.Test
         {
             //Arrange
             var robot = new ToyRobot(new TabletopMap());
-            
-            //Act
-            var rotateLeftCommand = robot.TryLeft();
-            var rotateRightCommand = robot.TryRight();
-            
+
             //Assert
-            Assert.False(rotateLeftCommand);
-            Assert.False(rotateRightCommand);
+            Assert.False(robot.IsCommandValid(Command.Left));
+            Assert.False(robot.IsCommandValid(Command.Right));
         }
         
         [Fact]
-        public void RotateAfterPlace()
+        public void RotateLeftAfterPlace()
         {
             //Arrange
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            robot.TryPlace("place 0,0,north");
-            var rotateLeftCommand = robot.TryLeft();
-            var rotateRightCommand = robot.TryRight();
-            
+            robot.Place("place 0,0,north");
+            robot.Left();
+
             //Assert
-            Assert.True(rotateLeftCommand);
-            Assert.True(rotateRightCommand);
+            Assert.True(robot.IsCommandValid(Command.Left));
+            Assert.Equal(Direction.West, robot.GetDirection());
+        }
+        
+        [Fact]
+        public void RotateRightAfterPlace()
+        {
+            //Arrange
+            var robot = new ToyRobot(new TabletopMap());
+            
+            //Act
+            robot.Place("place 0,0,north");
+            robot.Right();
+
+            //Assert
+            Assert.True(robot.IsCommandValid(Command.Right));
+            Assert.Equal(Direction.East, robot.GetDirection());
         }
     }
 }

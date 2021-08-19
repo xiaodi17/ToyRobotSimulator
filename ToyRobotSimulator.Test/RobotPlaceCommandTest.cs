@@ -26,10 +26,10 @@ namespace ToyRobotSimulator.Test
             //Act
             foreach (var command in invalidPlaceCommands)
             {
-                var isValid = _toyRobot.TryPlace(command);
+                _toyRobot.Place(command);
                 
                 //Assert
-                Assert.False(isValid);
+                Assert.False(_toyRobot.IsRobotPlaceDown());
             }
         }
 
@@ -40,12 +40,11 @@ namespace ToyRobotSimulator.Test
             var robot = new ToyRobot(new TabletopMap());
             
             //Act
-            var firstCommand = robot.TryPlace("place 0,0,north");
-            var secondCommand = robot.TryPlace("place 1,1");
+            robot.Place("place 0,0,north");
+            robot.Place("place 1,1");
             
             //Assert
-            Assert.True(firstCommand);
-            Assert.True(secondCommand);
+            Assert.True(robot.IsRobotPlaceDown());
             Assert.Equal(Direction.North, robot.GetDirection());
         }
     }

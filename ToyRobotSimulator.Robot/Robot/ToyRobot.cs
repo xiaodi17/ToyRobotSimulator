@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using ToyRobotSimulator.Robot.Message;
 using ToyRobotSimulator.Robot.Tabletop;
 
 namespace ToyRobotSimulator.Robot.Robot
@@ -29,85 +30,134 @@ namespace ToyRobotSimulator.Robot.Robot
             return _direction;
         }
 
-        public bool TryPlace(string command)
+        public bool IsRobotPlaceDown()
+        {
+            if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition))
+                return false;
+
+            if (_direction == Direction.Undefined)
+                return false;
+
+            return true;
+        }
+
+        public (int xPosition, int yPosition) GetRobotCurrentPosition()
+        {
+            return (_xCurrentPosition, _yCurrentPosition);
+        }
+
+        public void Place(string command)
         {
             var stringWithoutWhitespaces = Regex.Replace(command.Substring(5), @"\s+", "");
             var commandDetails = stringWithoutWhitespaces.Split(',');
 
             if (commandDetails.Length < 2 || commandDetails.Length > 3)
-                return false;
-            
+            {
+                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                return;
+            }
+
             if (!int.TryParse(commandDetails[0], out var xMovePosition))
-                return false;
-            
+            {
+                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                return;
+            }
+
             if (!int.TryParse(commandDetails[1], out var yMovePosition))
-                return false;
+            {
+                Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                return;
+            }
 
             if (commandDetails.Length == 3)
             {
                 if (string.IsNullOrEmpty(commandDetails[2]))
-                    return false;
+                {
+                    Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                    return;
+                }
                 
                 if (!Enum.TryParse(commandDetails[2], true, out _direction))
                 {
-                    Console.WriteLine("Invalid direction");
+                    Console.WriteLine(RobotMessage.INVALID_COMMAND);
+                    return;
                 }
             }
 
             if (!IsCurrentPositionValid(xMovePosition, yMovePosition))
             {
-                Console.WriteLine("Place at invalid position");
-                return false;
+                Console.WriteLine(RobotMessage.ROBOT_OUT_OF_BOUND);
+                return;
             }
 
             if (IsCurrentPositionValid(xMovePosition, yMovePosition) && _direction == Direction.Undefined)
             {
-                Console.WriteLine("Invalid place operation, the first place operation has to include a facing direction.");
-                return false;
+                Console.WriteLine(RobotMessage.ROBOT_INVALID_PLACE);
+                return;
             }
 
             _xCurrentPosition = xMovePosition;
             _yCurrentPosition = yMovePosition;
-
-            return true;
         }
 
-        public bool TryMove()
+        public void Move()
         {
             switch (_direction)
             {
                 case Direction.East:
                     if (!IsCurrentPositionValid(_xCurrentPosition + 1, _yCurrentPosition))
-                        return false;
+                    {
+                        Console.WriteLine(RobotMessage.ROBOT_OUT_OF_BOUND);
+                        return;
+                    }
+                    
                     _xCurrentPosition++;
-                    return true;
+                    break;
+                
                 case Direction.North:
                     if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition + 1))
-                        return false;
+                    {
+                        Console.WriteLine(RobotMessage.ROBOT_OUT_OF_BOUND);
+                        return;
+                    }
+                    
                     _yCurrentPosition++;
-                    return true;
+                    break;
+                
                 case Direction.South:
                     if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition - 1))
-                        return false;
+                    {
+                        Console.WriteLine(RobotMessage.ROBOT_OUT_OF_BOUND);
+                        return;
+                    }
+                    
                     _yCurrentPosition--;
-                    return true;
+                    break;
+                
                 case Direction.West:
                     if (!IsCurrentPositionValid(_xCurrentPosition - 1, _yCurrentPosition))
-                        return false;
+                    {
+                        Console.WriteLine(RobotMessage.ROBOT_OUT_OF_BOUND);
+                        return;
+                    }
+                    
                     _xCurrentPosition--;
-                    return true;
-                case Direction.Undefined:
-                    return false;
+                    break;
                 
-                default:
-                    return false;
+                case Direction.Undefined:
+                    Console.WriteLine(RobotMessage.ROBOT_INVALID_DIRECTION);
+                    break;
+                
             }
         }
 
-        public bool TryLeft()
+        public void Left()
         {
             if (!IsCommandValid(Command.Left))
-                return false;
+            {
+                Console.WriteLine(RobotMessage.ROBOT_NOT_PLACED);
+                return;
+            }
             
             switch (_direction)
             {
@@ -123,16 +173,19 @@ namespace ToyRobotSimulator.Robot.Robot
                 case Direction.West:
                     _direction = Direction.South;
                     break;
+                case Direction.Undefined:
+                    break;
             }
-
-            return true;
         }
 
-        public bool TryRight()
+        public void Right()
         {
             if (!IsCommandValid(Command.Left))
-                return false;
-            
+            {
+                Console.WriteLine(RobotMessage.ROBOT_NOT_PLACED);
+                return;
+            }
+
             switch (_direction)
             {
                 case Direction.East:
@@ -147,17 +200,20 @@ namespace ToyRobotSimulator.Robot.Robot
                 case Direction.West:
                     _direction = Direction.North;
                     break;
+                case Direction.Undefined:
+                    break;
             }
-
-            return true;
         }
 
-        public string Report()
+        public void Report()
         {
             if (!IsCurrentPositionValid(_xCurrentPosition, _yCurrentPosition))
-                return string.Empty;
-
-            return $"X: {_xCurrentPosition}, Y: {_yCurrentPosition}, Facing: {_direction}";
+            {
+                Console.WriteLine(RobotMessage.ROBOT_NOT_PLACED);
+                return;
+            }
+                
+            Console.WriteLine($"X: {_xCurrentPosition}, Y: {_yCurrentPosition}, Facing: {_direction}");
         }
 
         public bool IsCommandValid(Command command)
